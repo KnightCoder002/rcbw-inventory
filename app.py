@@ -74,10 +74,7 @@ def _init_state():
 _init_state()
 
 # ── Initialise Google Sheets once ─────────────────────────────────────────────
-@st.cache_resource
-def setup():
-    init_sheets()
-    return True
+init_sheets()
 
 setup()
 
