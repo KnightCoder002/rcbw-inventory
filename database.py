@@ -169,9 +169,14 @@ PRODUCT_CATEGORIES = {
 }
 
 # ── Google Sheets client ─────────────────────────────────────────────────────
-@st.cache_resource
 def get_client():
-    creds  = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPES)
+    try:
+        # Running on Streamlit Cloud - use secrets
+        service_account_info = dict(st.secrets["gcp_service_account"])
+        creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
+    except Exception:
+        # Running locally - use JSON file
+        creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPES)
     client = gspread.authorize(creds)
     return client
 
