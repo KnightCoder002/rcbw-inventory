@@ -185,35 +185,25 @@ def get_sheet():
 
 # ── One‑time sheet initialisation ────────────────────────────────────────────
 def init_sheets():
-    """Create worksheets and headers if they don't exist yet."""
-    sh = get_sheet()
-    existing = [ws.title for ws in sh.worksheets()]
+    """Create worksheets and headers only if they do not exist yet."""
+    try:
+        sh = get_sheet()
+        existing = [ws.title for ws in sh.worksheets()]
+    except Exception:
+        return  # Cannot reach sheet — skip silently, app still works
 
-    # ── Stock sheet ──
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    # Stock sheet
     if WS_STOCK not in existing:
         ws   = sh.add_worksheet(WS_STOCK, rows=500, cols=5)
         rows = [["Product", "Variant", "Quantity", "Last Updated"]]
         for product, data in PRODUCTS.items():
             for variant in data["variants"]:
                 rows.append([product, variant, 0, now])
-        ws.update("A1", rows)          # single API call — no quota issue
-    else:
-        ws            = sh.worksheet(WS_STOCK)
-        try:
-            records       = ws.get_all_records()
-        except Exception:
-            records = []
-        existing_keys = {(r["Product"], r["Variant"]) for r in records}
-        new_rows      = []
-        for product, data in PRODUCTS.items():
-            for variant in data["variants"]:
-                if (product, variant) not in existing_keys:
-                    new_rows.append([product, variant, 0, now])
-        if new_rows:
-            ws.append_rows(new_rows)   # single batch call
+        ws.update("A1", rows)
 
-    # ── Transactions sheet ──
+    # Transactions sheet
     if WS_TRANSACTIONS not in existing:
         ws = sh.add_worksheet(WS_TRANSACTIONS, rows=2000, cols=6)
         ws.append_row(["Timestamp", "Type", "Product", "Variant", "Quantity", "Notes"])
