@@ -200,7 +200,10 @@ def init_sheets():
         ws.update("A1", rows)          # single API call — no quota issue
     else:
         ws            = sh.worksheet(WS_STOCK)
-        records       = ws.get_all_records()
+        try:
+            records       = ws.get_all_records()
+        except Exception:
+            records = []
         existing_keys = {(r["Product"], r["Variant"]) for r in records}
         new_rows      = []
         for product, data in PRODUCTS.items():
