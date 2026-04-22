@@ -271,14 +271,7 @@ def page_director_dashboard():
     transactions = get_transactions()
 
     # ── ALERTS ──
-    if zero_items:
-        st.markdown(
-            f'<div class="alert-red">🚨 OUT OF STOCK ({len(zero_items)} items):<br>'
-            + "<br>".join([f"• {r['Product']} — {r['Variant']}" for r in zero_items])
-            + "</div>",
-            unsafe_allow_html=True,
-        )
-
+   
     if low_items:
         st.markdown(
             f'<div class="alert-warn">⚠️ LOW STOCK — only {LOW_STOCK_THRESHOLD} or fewer left ({len(low_items)} items):<br>'
