@@ -23,19 +23,16 @@ LOW_STOCK_THRESHOLD = 3
 # ── Product catalogue ────────────────────────────────────────────────────────
 PRODUCTS = {
     "Kitchen Towel": {
-        "variants": ["Small (Rs.5)", "Medium (Rs.10)", "Large (Rs.25)"]
+        "variants": ["Small (Rs.5)", "Medium (Rs.10)", "Large (Rs.20)"]
     },
-    "Ladies Kerchief": {
-        "variants": ["Standard (Rs.20-25)"]
-    },
-    "Gents Kerchief": {
-        "variants": ["Standard (Rs.20-25)"]
+    "Kerchief": {
+        "variants": ["Ladies (Rs.15)", "Gents (Rs.20)", "Cartoon (Rs.10)"]
     },
     "Bath Towel": {
-        "variants": ["Small (Rs.100)", "Medium (Rs.145)", "Large (Rs.250)"]
+        "variants": ["V.Small (Rs.60)", "Small (Rs.70)", "Medium (Rs.80)", "Big (Rs.100)", "Large (Rs.145)", "X.Large (Rs.160)"]
     },
     "Cartoon Towel": {
-        "variants": ["Standard (Rs.145)"]
+        "variants": ["Standard (Rs.200)"]
     },
     "Bedsheet - Single": {
         "variants": ["Plain", "Chota Bheem", "Other Design"]
@@ -49,29 +46,35 @@ PRODUCTS = {
     "Bedsheet - Queen Size": {
         "variants": ["Plain", "Other Design"]
     },
+    "Bedsheet - Tari": {
+        "variants": ["Small (Rs.175)", "Medium (Rs.250)", "Large (Rs.350)"]
+    },
     "Bed Cover": {
-        "variants": ["Small (Rs.250)", "Medium (Rs.500)", "Large (Rs.1200)"]
+        "variants": ["Small (Rs.250)", "Big (Rs.300-800)", "King (Rs.1100)"]
     },
     "Quilt": {
         "variants": ["Small (Rs.500)", "Large (Rs.1500)"]
     },
-    "Yoga Mat / Baby Mat": {
-        "variants": ["Standard (Rs.250-750)"]
+    "Mat": {
+        "variants": ["Small (Rs.25)", "Large (Rs.65)"]
     },
-    "Sleeping Mat": {
-        "variants": ["Standard"]
+    "Yoga Mat": {
+        "variants": ["Standard (Rs.300)"]
+    },
+    "Baby Mat": {
+        "variants": ["Standard (Rs.250)"]
     },
     "Pillow": {
         "variants": ["Standard"]
     },
     "Pillow Cover": {
-        "variants": ["Standard (Rs.60-150)"]
+        "variants": ["Standard (Rs.60)"]
     },
     "Small Pillow Cover": {
-        "variants": ["Standard (Rs.60-200)"]
+        "variants": ["Standard (Rs.50)"]
     },
     "Cushion": {
-        "variants": ["Standard (Rs.150-200)"]
+        "variants": ["Small (Rs.200)", "Large (Rs.250)"]
     },
     "Cushion Cover": {
         "variants": ["Standard (Rs.150-200)"]
@@ -80,16 +83,22 @@ PRODUCTS = {
         "variants": ["Standard (Rs.25-100)"]
     },
     "Hot Plate": {
-        "variants": ["Standard (Rs.25-100)"]
+        "variants": ["Standard (Rs.25)"]
     },
     "Wire Bag": {
-        "variants": ["Small (Rs.200)", "Medium (Rs.750)", "Large (Rs.1500)"]
+        "variants": ["XXXS (Rs.120)", "XXS (Rs.150)", "XS (Rs. 160)", "S (Rs. 240)", "M (Rs.270)", "L (Rs.300)", "XL (Rs.440)", "XXL (Rs.470)", "XXXL (Rs. 500)", "UltraLarge (Rs.570)"]
     },
-    "Cloth Bag / Small Bag": {
+    "Cloth Bag": {
         "variants": ["Small (Rs.10)", "Medium (Rs.150)", "Large (Rs.300)"]
     },
+    "Ladies HandBag": {
+        "variants": ["XS (Rs. 100)", "S (Rs. 150)", "M (Rs.175)", "L (Rs.200)", "XL (Rs.250)", "XXL (Rs.400)", "Jolna (Rs. 150)"]
+    },
+    "Handbag": {
+        "variants": ["Small (Rs.50)", "Medium (Rs.125)", "Large (Rs.150)"]
+    },
     "Lunch Bag": {
-        "variants": ["Standard (Rs.150-300)"]
+        "variants": ["Small (Rs.150)", "Large (Rs.200)"]
     },
     "Travel Bag": {
         "variants": ["Standard (Rs.300)"]
@@ -97,8 +106,14 @@ PRODUCTS = {
     "Laptop Jute/Cloth Bag": {
         "variants": ["Standard (Rs.450)"]
     },
+    "Belt Bag": {
+        "variants": ["Cloth (Rs.150)", "Jeans (Rs.150)"]
+    },
     "Purse": {
-        "variants": ["Standard (Rs.45)"]
+        "variants": ["Varying (Rs.10-100)"]
+    },
+    "Pouch": {
+        "variants": ["Standard (Rs.50)"]
     },
     "Cell Phone Pouch": {
         "variants": ["Side Zip (Rs.150)"]
@@ -110,10 +125,16 @@ PRODUCTS = {
         "variants": ["Small (Rs.100)", "Large (Rs.200)"]
     },
     "Door Mat": {
-        "variants": ["Small (Rs.60)", "Medium (Rs.150)", "Large (Rs.225)"]
+        "variants": ["Puny (Rs.25)", "Small (Rs.60)", "Medium (Rs.65)", "Large (Rs.160)"]
     },
     "Table Mat": {
-        "variants": ["Small (Rs.10)", "Large (Rs.250)"]
+        "variants": ["Small (Rs.10-20)", "Large (Rs.250)"]
+    },
+    "Full Screen": {
+        "variants": ["Small (Rs.25)", "Medium (Rs.100)", "Large (Rs.300)"]
+    },
+    "Half Screen": {
+        "variants": ["Standard (Rs.20)"]
     },
     "iPad Cover": {
         "variants": ["Standard (Rs.200)"]
@@ -124,6 +145,9 @@ PRODUCTS = {
     "Fridge Cover": {
         "variants": ["Standard"]
     },
+    "Fridge Holder": {
+        "variants": ["Standard"]
+    },
     "Fruit Basket": {
         "variants": ["Standard"]
     },
@@ -131,16 +155,13 @@ PRODUCTS = {
         "variants": ["Standard"]
     },
     "Inskirt": {
-        "variants": ["XS (Rs.150)", "S (Rs.170)", "M (Rs.190)", "L (Rs.210)", "XL (Rs.220)"]
-    },
-    "Nighty": {
-        "variants": ["XL (Rs.200)", "XXL (Rs.275)", "XXXL (Rs.350)"]
-    },
-    "Apron": {
-        "variants": ["Small (Rs.50)", "Medium (Rs.120)", "Large (Rs.200)"]
+        "variants": ["XS (Rs.160)", "S (Rs.170)", "M (Rs.180)", "L (Rs.190)", "XL (Rs.200)"]
     },
     "Night Dress": {
-        "variants": ["Medium (Rs.300)"]
+        "variants": ["XL (Rs.200)", "XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
+    },
+    "Apron": {
+        "variants": ["Small (Rs.25)", "Medium (Rs.100)", "Large (Rs.200)"]
     },
     "Baby Dress": {
         "variants": ["Standard (Rs.100-150)"]
@@ -155,19 +176,19 @@ PRODUCTS = {
         "variants": ["Small (Rs.50)", "Medium (Rs.60)", "Large (Rs.125)"]
     },
 }
-
 PRODUCT_CATEGORIES = {
-    "🧺 Towels & Kerchiefs":   ["Kitchen Towel", "Ladies Kerchief", "Gents Kerchief", "Bath Towel", "Cartoon Towel"],
-    "🛏️ Bedsheets & Spreads":  ["Bedsheet - Single", "Bedsheet - Double", "Bedsheet - King Size", "Bedsheet - Queen Size"],
-    "🛌 Bed Covers & Quilts":  ["Bed Cover", "Quilt", "Yoga Mat / Baby Mat", "Sleeping Mat"],
+    "🧺 Towels & Kerchiefs":   ["Kitchen Towel", "Kerchief", "Bath Towel", "Cartoon Towel"],
+    "🛏️ Bedsheets & Spreads":  ["Bedsheet - Single", "Bedsheet - Double", "Bedsheet - King Size", "Bedsheet - Queen Size", "Bedsheet - Tari"],
+    "🛌 Bed Covers & Quilts":  ["Bed Cover", "Quilt", "Mat", "Yoga Mat", "Baby Mat"],
     "🪡 Pillows & Cushions":   ["Pillow", "Pillow Cover", "Small Pillow Cover", "Cushion", "Cushion Cover", "Hand Gloves", "Hot Plate"],
-    "👜 Bags & Pouches":       ["Wire Bag", "Cloth Bag / Small Bag", "Lunch Bag", "Travel Bag", "Laptop Jute/Cloth Bag",
-                                "Purse", "Cell Phone Pouch", "Toilet Gift Pouch", "Jute Bag / Ladies Bag"],
-    "🏠 Home Items":           ["Door Mat", "Table Mat", "iPad Cover", "Table Cloth", "Fridge Cover", "Fruit Basket", "Letter Box"],
-    "👗 Clothing":             ["Inskirt", "Nighty", "Apron", "Night Dress", "Baby Dress", "Napkin"],
+    "👜 Bags & Pouches":       ["Wire Bag", "Cloth Bag", "Ladies HandBag", "Handbag", "Lunch Bag", "Travel Bag",
+                                "Laptop Jute/Cloth Bag", "Belt Bag", "Purse", "Pouch",
+                                "Cell Phone Pouch", "Toilet Gift Pouch", "Jute Bag / Ladies Bag"],
+    "🏠 Home Items":           ["Door Mat", "Table Mat", "Full Screen", "Half Screen", "iPad Cover",
+                                "Table Cloth", "Fridge Cover", "Fridge Holder", "Fruit Basket", "Letter Box"],
+    "👗 Clothing":             ["Inskirt", "Night Dress", "Apron", "Baby Dress", "Napkin"],
     "🕯️ Candles":             ["Candle", "Candle Packet"],
 }
-
 # ── Google Sheets client ─────────────────────────────────────────────────────
 def get_client():
     try:
