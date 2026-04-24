@@ -93,8 +93,7 @@ def page_home():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown('<div class="btn-produce">', unsafe_allow_html=True)
-        if st.button("👩‍🦯 I am
-Staff", key="go_worker"):
+        if st.button("👩‍🦯 I am a Staff", key="go_worker"):
             st.session_state.page = "worker_choice"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
