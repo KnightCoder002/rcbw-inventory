@@ -56,7 +56,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-DIRECTOR_PASSWORD = "rcbw2024"   # ← change this before handing over
+DIRECTOR_PASSWORD = "rcbw"   # Check with ma'am....She said this is okay...
 
 # ── Session state defaults ────────────────────────────────────────────────────
 def _init_state():
