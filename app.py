@@ -23,17 +23,18 @@ st.markdown("""
 
     /* Big, readable buttons */
     .stButton > button {
-        font-size: 1.3rem !important;
-        padding: 0.75rem 1.5rem !important;
-        border-radius: 12px !important;
+        font-size: 1.6rem !important;
+        padding: 1.2rem 1.5rem !important;
+        border-radius: 16px !important;
         font-weight: 700 !important;
         width: 100%;
+        min-height: 5rem !important;
     }
 
     /* Produced = green */
-    .btn-produce > button { background-color: #1a7a3a !important; color: white !important; }
+    .btn-produce > button { background-color: #1a7a3a !important; color: white !important; font-size: 2rem !important; min-height: 7rem !important; }
     /* Sold = blue */
-    .btn-sell    > button { background-color: #1a4a8a !important; color: white !important; }
+    .btn-sell    > button { background-color: #1a4a8a !important; color: white !important; font-size: 2rem !important; min-height: 7rem !important; }
     /* Confirm = dark green */
     .btn-confirm > button { background-color: #0d5c2a !important; color: white !important; font-size:1.5rem !important; }
     /* Back = grey */
@@ -55,7 +56,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-DIRECTOR_PASSWORD = "rcbw"   
+DIRECTOR_PASSWORD = "rcbw2024"   # ← change this before handing over
 
 # ── Session state defaults ────────────────────────────────────────────────────
 def _init_state():
@@ -74,7 +75,12 @@ def _init_state():
 _init_state()
 
 # ── Initialise Google Sheets once ─────────────────────────────────────────────
-init_sheets()
+@st.cache_resource
+def setup():
+    init_sheets()
+    return True
+
+setup()
 
 # ═════════════════════════════════════════════════════════════════════════════
 # HOME PAGE
@@ -87,7 +93,8 @@ def page_home():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown('<div class="btn-produce">', unsafe_allow_html=True)
-        if st.button("👩‍🦯 I am a\nWorker", key="go_worker"):
+        if st.button("👩‍🦯 I am
+Staff", key="go_worker"):
             st.session_state.page = "worker_choice"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -104,7 +111,7 @@ def page_home():
 # WORKER — CHOOSE ACTION
 # ═════════════════════════════════════════════════════════════════════════════
 def page_worker_choice():
-    st.title("👩‍🦯 Worker Menu")
+    st.title("👩‍🦯 Staff Menu")
     st.markdown("### What would you like to do?")
     st.markdown("---")
 
@@ -271,7 +278,14 @@ def page_director_dashboard():
     transactions = get_transactions()
 
     # ── ALERTS ──
-   
+    if zero_items:
+        st.markdown(
+            f'<div class="alert-red">🚨 OUT OF STOCK ({len(zero_items)} items):<br>'
+            + "<br>".join([f"• {r['Product']} — {r['Variant']}" for r in zero_items])
+            + "</div>",
+            unsafe_allow_html=True,
+        )
+
     if low_items:
         st.markdown(
             f'<div class="alert-warn">⚠️ LOW STOCK — only {LOW_STOCK_THRESHOLD} or fewer left ({len(low_items)} items):<br>'
