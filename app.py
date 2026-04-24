@@ -93,7 +93,8 @@ def page_home():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown('<div class="btn-produce">', unsafe_allow_html=True)
-        if st.button("👩‍🦯 I am a Staff", key="go_worker"):
+        if st.button("👩‍🦯 I am
+Staff", key="go_worker"):
             st.session_state.page = "worker_choice"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -276,30 +277,17 @@ def page_director_dashboard():
     zero_items   = get_zero_stock_items()
     transactions = get_transactions()
 
-    # ── ALERTS ──
-    if zero_items:
-        st.markdown(
-            f'<div class="alert-red">🚨 OUT OF STOCK ({len(zero_items)} items):<br>'
-            + "<br>".join([f"• {r['Product']} — {r['Variant']}" for r in zero_items])
-            + "</div>",
-            unsafe_allow_html=True,
-        )
-
-    if low_items:
-        st.markdown(
-            f'<div class="alert-warn">⚠️ LOW STOCK — only {LOW_STOCK_THRESHOLD} or fewer left ({len(low_items)} items):<br>'
-            + "<br>".join([f"• {r['Product']} ({r['Variant']}) — {r['Quantity']} left" for r in low_items])
-            + "</div>",
-            unsafe_allow_html=True,
-        )
-
-    if not zero_items and not low_items:
+    # ── Small alert summary at top ──
+    total_alerts = len(zero_items) + len(low_items)
+    if total_alerts > 0:
+        st.warning(f"⚠️ {total_alerts} stock alert(s) — check the Alerts tab for details.")
+    else:
         st.success("✅ All stock levels are healthy!")
 
     st.markdown("---")
 
     # ── TABS ──
-    tab1, tab2, tab3 = st.tabs(["📦 Current Stock", "📈 Produced vs Sold", "📋 Transaction Log"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📦 Current Stock", "📈 Produced vs Sold", "📋 Transaction Log", "🚨 Alerts"])
 
     # ── Tab 1: Current Stock ──
     with tab1:
@@ -360,6 +348,28 @@ def page_director_dashboard():
             st.dataframe(df_tx.reset_index(drop=True), use_container_width=True, hide_index=True)
         else:
             st.info("No transactions recorded yet.")
+
+    # ── Tab 4: Alerts ──
+    with tab4:
+        st.subheader("🚨 Stock Alerts")
+        if zero_items:
+            st.markdown("### Out of Stock")
+            st.markdown(
+                f'<div class="alert-red">🚨 {len(zero_items)} items are completely out of stock:<br>'
+                + "<br>".join([f"• {r['Product']} — {r['Variant']}" for r in zero_items])
+                + "</div>",
+                unsafe_allow_html=True,
+            )
+        if low_items:
+            st.markdown("### Low Stock")
+            st.markdown(
+                f'<div class="alert-warn">⚠️ {len(low_items)} items have {LOW_STOCK_THRESHOLD} or fewer left:<br>'
+                + "<br>".join([f"• {r['Product']} ({r['Variant']}) — {r['Quantity']} left" for r in low_items])
+                + "</div>",
+                unsafe_allow_html=True,
+            )
+        if not zero_items and not low_items:
+            st.success("✅ All stock levels are healthy! No alerts.")
 
     st.markdown("---")
     st.markdown('<div class="btn-back">', unsafe_allow_html=True)
