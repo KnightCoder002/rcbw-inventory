@@ -56,7 +56,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-DIRECTOR_PASSWORD = "rcbw"   # Check with ma'am...
+DIRECTOR_PASSWORD = "rcbw"   # ← change this before handing over
 
 # ── Session state defaults ────────────────────────────────────────────────────
 def _init_state():
@@ -93,7 +93,8 @@ def page_home():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown('<div class="btn-produce">', unsafe_allow_html=True)
-        if st.button("👩‍💼 I am a Staff", key="go_worker"):
+        if st.button("👩‍🦯 I am
+Staff", key="go_worker"):
             st.session_state.page = "worker_choice"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -184,6 +185,13 @@ def page_select_product():
     if st.button(f"✅ CONFIRM — {action_label} {quantity} × {product} ({variant})", key="confirm_btn"):
         delta = quantity if st.session_state.tx_type == "Produced" else -quantity
         new_qty = update_stock(product, variant, delta, st.session_state.tx_type)
+        # Save undo info
+        st.session_state.undo = {
+            "product": product,
+            "variant": variant,
+            "delta": delta,
+            "tx_type": st.session_state.tx_type,
+        }
         st.session_state.page = "success"
         st.session_state.success_msg = (
             f"✅ Recorded!\n\n"
@@ -275,6 +283,29 @@ def page_director_dashboard():
     low_items    = get_low_stock_items(LOW_STOCK_THRESHOLD)
     zero_items   = get_zero_stock_items()
     transactions = get_transactions()
+
+    # ── Undo last transaction ──
+    if transactions:
+        last = transactions[-1]
+        if last.get("Type") != "Undo":
+            st.markdown("**Last transaction:**")
+            st.info(
+                f"**{last.get('Type','?')}** — {last.get('Product','?')} "
+                f"({last.get('Variant','?')}) × {last.get('Quantity','?')} "
+                f"at {last.get('Timestamp','?')}"
+            )
+            if st.button("↩️ Undo this transaction", key="director_undo"):
+                tx_type = last.get("Type", "")
+                product = last.get("Product", "")
+                variant = last.get("Variant", "")
+                qty     = int(last.get("Quantity", 0))
+                # Reverse: if it was Produced, subtract; if Sold, add back
+                reverse_delta = -qty if tx_type == "Produced" else qty
+                update_stock(product, variant, reverse_delta, "Undo")
+                st.success(f"↩️ Undone! {product} ({variant}) reversed.")
+                st.rerun()
+
+    st.markdown("---")
 
     # ── Small alert summary at top ──
     total_alerts = len(zero_items) + len(low_items)
