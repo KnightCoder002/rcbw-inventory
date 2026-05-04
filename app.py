@@ -56,7 +56,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-DIRECTOR_PASSWORD = "rcbw"   # Check with ma'am....She said this is okay...
+DIRECTOR_PASSWORD = "rcbw2024"   # ← change this before handing over
 
 # ── Session state defaults ────────────────────────────────────────────────────
 def _init_state():
@@ -93,7 +93,8 @@ def page_home():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown('<div class="btn-produce">', unsafe_allow_html=True)
-        if st.button("👩‍🦯 I am a Staff", key="go_worker"):
+        if st.button("👩‍🦯 I am
+Staff", key="go_worker"):
             st.session_state.page = "worker_choice"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -291,14 +292,24 @@ def page_director_dashboard():
     # ── Tab 1: Current Stock ──
     with tab1:
         st.subheader("Current Stock by Category")
-        df_stock = pd.DataFrame(stock)
-        if not df_stock.empty and "Product" in df_stock.columns:
-            df_stock = df_stock[["Product", "Variant", "Quantity", "Last Updated"]]
-            df_stock["Quantity"] = pd.to_numeric(df_stock["Quantity"], errors="coerce").fillna(0).astype(int)
-        elif not df_stock.empty:
-            # Rename columns by position if headers didn't match
-            df_stock.columns = ["Product", "Variant", "Quantity", "Last Updated"][:len(df_stock.columns)]
-            df_stock["Quantity"] = pd.to_numeric(df_stock["Quantity"], errors="coerce").fillna(0).astype(int)
+        if not stock:
+            st.warning("Could not load stock data. Please refresh.")
+        else:
+            # Normalise headers — strip spaces, fix capitalisation
+            def norm(r):
+                return {k.strip(): v for k, v in r.items()}
+            stock_clean = [norm(r) for r in stock]
+            df_stock = pd.DataFrame(stock_clean)
+            # Rename columns to expected names regardless of case/spaces
+            col_map = {}
+            for col in df_stock.columns:
+                cl = col.strip().lower()
+                if cl == "product":       col_map[col] = "Product"
+                elif cl == "variant":     col_map[col] = "Variant"
+                elif cl == "quantity":    col_map[col] = "Quantity"
+                elif "updated" in cl:     col_map[col] = "Last Updated"
+            df_stock = df_stock.rename(columns=col_map)
+            df_stock["Quantity"] = pd.to_numeric(df_stock.get("Quantity", 0), errors="coerce").fillna(0).astype(int)
 
             for category, products in PRODUCT_CATEGORIES.items():
                 cat_df = df_stock[df_stock["Product"].isin(products)]
@@ -306,7 +317,7 @@ def page_director_dashboard():
                 if not cat_df.empty:
                     st.markdown(f"**{category}**")
                     st.dataframe(
-                        cat_df.reset_index(drop=True),
+                        cat_df[["Product","Variant","Quantity","Last Updated"]].reset_index(drop=True),
                         use_container_width=True,
                         hide_index=True,
                     )
