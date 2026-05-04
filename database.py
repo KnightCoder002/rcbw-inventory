@@ -158,7 +158,10 @@ PRODUCTS = {
         "variants": ["XS (Rs.160)", "S (Rs.170)", "M (Rs.180)", "L (Rs.190)", "XL (Rs.200)"]
     },
     "Night Dress": {
-        "variants": ["XL (Rs.200)", "XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
+        "variants": ["XL (Rs.200)"]
+    },
+    "Nighty": {
+        "variants": ["XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
     },
     "Apron": {
         "variants": ["Small (Rs.25)", "Medium (Rs.100)", "Large (Rs.200)"]
@@ -186,7 +189,7 @@ PRODUCT_CATEGORIES = {
                                 "Cell Phone Pouch", "Toilet Gift Pouch", "Jute Bag / Ladies Bag"],
     "🏠 Home Items":           ["Door Mat", "Table Mat", "Full Screen", "Half Screen", "iPad Cover",
                                 "Table Cloth", "Fridge Cover", "Fridge Holder", "Fruit Basket", "Letter Box"],
-    "👗 Clothing":             ["Inskirt", "Night Dress", "Apron", "Baby Dress", "Napkin"],
+    "👗 Clothing":             ["Inskirt", "Night Dress", "Nighty", "Apron", "Baby Dress", "Napkin"],
     "🕯️ Candles":             ["Candle", "Candle Packet"],
 }
 # ── Google Sheets client ─────────────────────────────────────────────────────
