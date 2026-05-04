@@ -234,9 +234,12 @@ def init_sheets():
 
 # ── Stock helpers ─────────────────────────────────────────────────────────────
 def get_all_stock():
-    ws      = get_sheet().worksheet(WS_STOCK)
-    records = ws.get_all_records(expected_headers=["Product", "Variant", "Quantity", "Last Updated"])
-    return records
+    try:    
+        ws      = get_sheet().worksheet(WS_STOCK)
+        records = ws.get_all_records(expected_headers=["Product", "Variant", "Quantity", "Last Updated"])
+        return records
+    except Exception:
+        return []
 
 def get_stock_value(product: str, variant: str) -> int:
     records = get_all_stock()
@@ -276,5 +279,8 @@ def get_zero_stock_items():
     return [r for r in records if int(r["Quantity"]) == 0]
 
 def get_transactions():
-    ws = get_sheet().worksheet(WS_TRANSACTIONS)
-    return ws.get_all_records()
+    try:
+        ws = get_sheet().worksheet(WS_TRANSACTIONS)
+        return ws.get_all_records()
+    except Exception:
+        return []
