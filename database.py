@@ -158,10 +158,7 @@ PRODUCTS = {
         "variants": ["XS (Rs.160)", "S (Rs.170)", "M (Rs.180)", "L (Rs.190)", "XL (Rs.200)"]
     },
     "Night Dress": {
-        "variants": ["XL (Rs.200)"]
-    },
-    "Nighty": {
-        "variants": ["XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
+        "variants": ["XL (Rs.200)", "XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
     },
     "Apron": {
         "variants": ["Small (Rs.25)", "Medium (Rs.100)", "Large (Rs.200)"]
@@ -189,7 +186,7 @@ PRODUCT_CATEGORIES = {
                                 "Cell Phone Pouch", "Toilet Gift Pouch", "Jute Bag / Ladies Bag"],
     "🏠 Home Items":           ["Door Mat", "Table Mat", "Full Screen", "Half Screen", "iPad Cover",
                                 "Table Cloth", "Fridge Cover", "Fridge Holder", "Fruit Basket", "Letter Box"],
-    "👗 Clothing":             ["Inskirt", "Night Dress", "Nighty", "Apron", "Baby Dress", "Napkin"],
+    "👗 Clothing":             ["Inskirt", "Night Dress", "Apron", "Baby Dress", "Napkin"],
     "🕯️ Candles":             ["Candle", "Candle Packet"],
 }
 # ── Google Sheets client ─────────────────────────────────────────────────────
@@ -234,19 +231,33 @@ def init_sheets():
 
 # ── Stock helpers ─────────────────────────────────────────────────────────────
 def get_all_stock():
-    try:    
-        ws      = get_sheet().worksheet(WS_STOCK)
-        records = ws.get_all_records(expected_headers=["Product", "Variant", "Quantity", "Last Updated"])
-        return records
-    except Exception:
+    try:
+        ws   = get_sheet().worksheet(WS_STOCK)
+        rows = ws.get_all_values()
+        if len(rows) < 2:
+            return []
+        headers = rows[0]
+        result = []
+        for row in rows[1:]:
+            if any(row):
+                # Pad row if shorter than headers
+                padded = row + [""] * (len(headers) - len(row))
+                result.append(dict(zip(headers, padded)))
+        return result
+    except Exception as e:
         return []
 
-def get_stock_value(product: str, variant: str) -> int:
-    records = get_all_stock()
-    for i, r in enumerate(records):
-        if r["Product"] == product and r["Variant"] == variant:
-            return int(r["Quantity"]), i + 2   # +2: 1‑indexed + header row
-    return 0, None
+def get_stock_value(product: str, variant: str):
+    try:
+        ws   = get_sheet().worksheet(WS_STOCK)
+        rows = ws.get_all_values()
+        for i, row in enumerate(rows[1:], start=2):
+            if len(row) >= 3 and row[0] == product and row[1] == variant:
+                qty = int(row[2]) if row[2] else 0
+                return qty, i
+        return 0, None
+    except Exception:
+        return 0, None
 
 def update_stock(product: str, variant: str, delta: int, tx_type: str, notes: str = ""):
     """Add delta (positive = produced, negative = sold) to stock."""
@@ -280,7 +291,11 @@ def get_zero_stock_items():
 
 def get_transactions():
     try:
-        ws = get_sheet().worksheet(WS_TRANSACTIONS)
-        return ws.get_all_records()
+        ws   = get_sheet().worksheet(WS_TRANSACTIONS)
+        rows = ws.get_all_values()
+        if len(rows) < 2:
+            return []
+        headers = rows[0]
+        return [dict(zip(headers, row)) for row in rows[1:] if any(row)]
     except Exception:
         return []
