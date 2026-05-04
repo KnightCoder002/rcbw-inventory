@@ -292,9 +292,13 @@ def page_director_dashboard():
     with tab1:
         st.subheader("Current Stock by Category")
         df_stock = pd.DataFrame(stock)
-        if not df_stock.empty:
+        if not df_stock.empty and "Product" in df_stock.columns:
             df_stock = df_stock[["Product", "Variant", "Quantity", "Last Updated"]]
-            df_stock["Quantity"] = df_stock["Quantity"].astype(int)
+            df_stock["Quantity"] = pd.to_numeric(df_stock["Quantity"], errors="coerce").fillna(0).astype(int)
+        elif not df_stock.empty:
+            # Rename columns by position if headers didn't match
+            df_stock.columns = ["Product", "Variant", "Quantity", "Last Updated"][:len(df_stock.columns)]
+            df_stock["Quantity"] = pd.to_numeric(df_stock["Quantity"], errors="coerce").fillna(0).astype(int)
 
             for category, products in PRODUCT_CATEGORIES.items():
                 cat_df = df_stock[df_stock["Product"].isin(products)]
