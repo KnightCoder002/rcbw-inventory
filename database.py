@@ -161,7 +161,7 @@ PRODUCTS = {
         "variants": ["XL (Rs.200)"]
     },
     "Nighty": {
-        "variants": ["XXL (Rs.275)", "XXXL (Rs.350)", "Free Size"]
+        "variants": ["XL", "XXL", "XXXL", "Free Size"]
     },
     "Apron": {
         "variants": ["Small (Rs.25)", "Medium (Rs.100)", "Large (Rs.200)"]
